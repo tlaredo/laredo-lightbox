@@ -42,6 +42,8 @@ function getGallery_id() {
         if (this.readyState == 4 && this.status == 200) {
             // Create gallery-specific variables
             var xmlDoc, gallery_id, title, description, totalPhotos;
+            // Used to generate primary photo
+            var primary_id, primary_secret, primary_server, primary_farm;
             var response = xmlGallery_id;
             console.log(response);
 
@@ -54,6 +56,15 @@ function getGallery_id() {
             count_photos = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("count_photos");
             title = xmlDoc.getElementsByTagName("title")[0].childNodes[0];
             description = xmlDoc.getElementsByTagName("description")[0].childNodes[0];
+            
+            // Set primary photo attributes
+            primary_id = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("primary_photo_id");
+            primary_server = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("primary_photo_server");
+            primary_farm = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("primary_photo_farm");
+            primary_secret = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("primary_photo_secret");
+
+            // Set primary cover photo
+            setPrimary(primary_id, primary_secret, primary_server, primary_farm);
 
             //Once tags for gallery are loaded, call getPhotos to get set of photos from gallery
             getPhotos(gallery_id);
@@ -69,6 +80,14 @@ function getGallery_id() {
     xmlGallery_id.send();
 }
 
+
+function setPrimary(photo_id, secret_id, server_id, farm_id) {
+    var URL = 'https://farm'+farm_id+'.staticflickr.com/'+server_id+'/'+photo_id+'_'+secret_id+'.jpg';
+    // Gradient background (black)
+    document.getElementById("title").style.background = 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.75)), url('+URL+')';
+    // Gradient background (white)
+    // document.getElementById("title").style.background = 'linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.75)), url('+URL+')';
+}
 
 //  Step 2: Function to get standard photo response from flickr.galleries.getPhotos() method. Extract farm-id, server-id, id, and secret-id and store them in 4 arrays
 function getPhotos(gallery_id) {
