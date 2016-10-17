@@ -20,6 +20,12 @@ console.log("Hello");
 //     xhttp.send();
 // }
 
+var imageURL = [];
+var photoID = [];
+var farmID = [];
+var serverID = [];
+var secretID = [];
+
 function getGallery_id() {
     var xmlGallery_id = new XMLHttpRequest();
     xmlGallery_id.onreadystatechange = function() {
@@ -32,20 +38,18 @@ function getGallery_id() {
             xmlDoc = parser.parseFromString(this.response,"text/xml");
 
             gallery_id = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("id");
-            totalPhotos = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("count_photos");
+            count_photos = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("count_photos");
             title = xmlDoc.getElementsByTagName("title")[0].childNodes[0];
             description = xmlDoc.getElementsByTagName("description")[0].childNodes[0];
             console.log(gallery_id);
-            console.log(totalPhotos);
+            console.log(count_photos);
             console.log(title);
             console.log(description);
 
             // Call funciton for loading getPhotos
-            // getPhotos(gallery_id);
+            getPhotos(gallery_id, count_photos);
         }
     };
-
-    // Call function for loading gallery_id
 
     xmlGallery_id.open("GET", "https://api.flickr.com/services/rest/?&method=flickr.urls.lookupGallery&api_key=cf93eae365c8cc4fdb8deb6116db8542&url=http://www.flickr.com/photos/flickr/galleries/72157669781709702/", true);
     xmlGallery_id.send();
@@ -53,18 +57,43 @@ function getGallery_id() {
 
 getGallery_id();
 
-// function getPhotos(gallery_id) {
-//     var getPhotos = new XMLHttpRequest();
-//     getPhotos.onreadystatechange = function() {
-//         if (this.readyState == 4 && this.status == 200) {
+function getPhotos(gallery_id, count_photos) {
+    var xmlGetPhotos = new XMLHttpRequest();
+    xmlGetPhotos.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var xmlDoc, photo, id, secret, server, farm;
+            var response = xmlGetPhotos;
+            console.log(response);
 
-//         }
-//     }
+            parser = new DOMParser();
+            xmlDoc = parser.parseFromString(this.response,"text/xml");
 
 
-//     getPhotos.open("GET", INSERT URL for API, true);
-//     getPhotos.send();
-// }
+            console.log(photo);
+            console.log(count_photos);
+
+            for (var i = 0; i < count_photos; ++i) {
+                photo = xmlDoc.getElementsByTagName("photo")[i];
+                window.photoID.push(photo.getAttribute("id"));
+                window.farmID.push(photo.getAttribute("farm"));
+                window.serverID.push(photo.getAttribute("server"));
+                window.secretID.push(photo.getAttribute("secret"));
+            }
+
+            console.log(photoID);
+            console.log(farmID);
+            console.log(serverID);
+            console.log(secretID);
+
+        }
+    }
+
+    
+    var apiCall = 'https://api.flickr.com/services/rest/?&method=flickr.galleries.getPhotos&api_key=cf93eae365c8cc4fdb8deb6116db8542&gallery_id='+gallery_id+'/';
+
+    xmlGetPhotos.open("GET", apiCall, true);
+    xmlGetPhotos.send();
+}
 
 // Call function for generating URLs with data from getPhotos
 
