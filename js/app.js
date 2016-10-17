@@ -8,24 +8,15 @@ console.log("Hello");
 //      https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
 //      Use string concatonation to generate URLs
 
-
-// function loadDoc() {
-//     var xhttp = new XMLHttpRequest();
-//     xhttp.onreadystatechange = function() {
-//         if (this.readyState == 4 && this.status == 200) {
-//             document.getElementById("demo").innerHTML = this.responseText;
-//         }
-//     };
-//     xhttp.open("GET", "ajax_info.txt", true);
-//     xhttp.send();
-// }
-
+//Initialize arrays for holding photo info and image URL
 var imageURL = [];
 var photoID = [];
 var farmID = [];
 var serverID = [];
 var secretID = [];
+var total;
 
+// 
 function getGallery_id() {
     var xmlGallery_id = new XMLHttpRequest();
     xmlGallery_id.onreadystatechange = function() {
@@ -41,13 +32,10 @@ function getGallery_id() {
             count_photos = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("count_photos");
             title = xmlDoc.getElementsByTagName("title")[0].childNodes[0];
             description = xmlDoc.getElementsByTagName("description")[0].childNodes[0];
-            console.log(gallery_id);
-            console.log(count_photos);
-            console.log(title);
-            console.log(description);
 
             // Call funciton for loading getPhotos
-            getPhotos(gallery_id, count_photos);
+            getPhotos(gallery_id);
+            total = count_photos;
         }
     };
 
@@ -55,9 +43,7 @@ function getGallery_id() {
     xmlGallery_id.send();
 }
 
-getGallery_id();
-
-function getPhotos(gallery_id, count_photos) {
+function getPhotos(gallery_id) {
     var xmlGetPhotos = new XMLHttpRequest();
     xmlGetPhotos.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
@@ -68,27 +54,18 @@ function getPhotos(gallery_id, count_photos) {
             parser = new DOMParser();
             xmlDoc = parser.parseFromString(this.response,"text/xml");
 
-
-            console.log(photo);
-            console.log(count_photos);
-
-            for (var i = 0; i < count_photos; ++i) {
+            for (var i = 0; i < total; ++i) {
                 photo = xmlDoc.getElementsByTagName("photo")[i];
-                window.photoID.push(photo.getAttribute("id"));
-                window.farmID.push(photo.getAttribute("farm"));
-                window.serverID.push(photo.getAttribute("server"));
-                window.secretID.push(photo.getAttribute("secret"));
+                photoID.push(photo.getAttribute("id"));
+                farmID.push(photo.getAttribute("farm"));
+                serverID.push(photo.getAttribute("server"));
+                secretID.push(photo.getAttribute("secret"));
             }
 
-            console.log(photoID);
-            console.log(farmID);
-            console.log(serverID);
-            console.log(secretID);
-
+            generateURLs();
         }
     }
 
-    
     var apiCall = 'https://api.flickr.com/services/rest/?&method=flickr.galleries.getPhotos&api_key=cf93eae365c8cc4fdb8deb6116db8542&gallery_id='+gallery_id+'/';
 
     xmlGetPhotos.open("GET", apiCall, true);
@@ -96,14 +73,24 @@ function getPhotos(gallery_id, count_photos) {
 }
 
 // Call function for generating URLs with data from getPhotos
+function generateURLs() {
+    for (var i = 0; i < total; ++i) {
+        var farm_id = farmID[i];
+        var server_id = serverID[i];
+        var photo_id = photoID[i];
+        var secret_id = secretID[i];
+        var URL = 'https://farm'+farm_id+'.staticflickr.com/'+server_id+'/'+photo_id+'_'+secret_id+'.jpg';
+        imageURL.push(URL);
+    }
+    console.log(imageURL.length)
+    console.log(imageURL);
+    ImageRepeat();
+}
 
-// Prevent elements on page from loading once we get loadAPI finished
+getGallery_id();
+console.log(imageURL);
+console.log(typeof imageURL);
 
-var imgArr = ["https://static.pexels.com/photos/3247/nature-forest-industry-rails.jpg", "http://wellnesscounselingmilwaukee.com/wp-content/uploads/2015/07/4-Nature-Wallpapers-2014-1.jpg", "http://www.gannett-cdn.com/-mm-/ebba134b48d4840ef5fa962f5413dde0535b58f0/c=0-181-3257-4524&r=537&c=0-0-534-712/local/-/media/2015/08/24/DetroitFreePress/DetroitFreePress/635760455385917378-AP-Michigan-Media-Day-Footba-1-.jpg", "http://www.planwallpaper.com/static/images/2ba7dbaa96e79e4c81dd7808706d2bb7_large.jpg", "https://upload.wikimedia.org/wikipedia/commons/c/c8/Altja_j%C3%B5gi_Lahemaal.jpg", "http://kingofwallpapers.com/pictures-of-nature/pictures-of-nature-011.jpg"];
-
-var capArr = ["Railroad", "Park", "Desert Lake", "Boardwalk", "Fall Creek", "Summer River"];
-
-var total = imgArr.length;
 var currentPic = 0;
 
 function openLightbox() {
@@ -143,16 +130,17 @@ function generatePic(n) {
     else {
         document.getElementById("next").style.display = "block";
     }
-    document.getElementById("lightbox-pic").src = imgArr[n];
+    document.getElementById("lightbox-pic").src = imageURL[n];
     // document.getElementById("caption").innerHTML = capArr[n];
     var nth = n++;
     document.getElementById("numPic").innerHTML = String(n) + "/" + String(total);
 
 }
 
+//Generate images on page by creating HTML elements dynamically.
 function ImageRepeat() {
 
-    for (var i=0; i< imgArr.length; i++) {
+    for (var i=0; i< 15; i++) {
         
         //Create div with class "tile"
         var tile = document.createElement("div");
@@ -166,14 +154,10 @@ function ImageRepeat() {
         var crop = document.createElement("div");
         crop.className = "crop";
 
-        // var span = document.createElement('span');
-        // span.innerHTML = '<img id="'+i+'" src="'+imgArr[i]+'" alt="'+capArr[i]+'" onclick="openLightbox();currentPic('+i+')>';
-
         //Create image and set source 
         var image = document.createElement("IMG");
         image.className = "grid-image"
-        image.src = imgArr[i];
-        image.alt = capArr[i];
+        image.src = imageURL[i];
         image.id = i;
         image.onclick = function() {openLightbox(); generatePic(this.id);};
         console.log(i);
@@ -189,11 +173,11 @@ function ImageRepeat() {
 
 }
 
-ImageRepeat();
 
 
 
+// Prevent elements on page from loading once we get loadAPI finished
 
-
+// var imgArr = ["https://static.pexels.com/photos/3247/nature-forest-industry-rails.jpg", "http://wellnesscounselingmilwaukee.com/wp-content/uploads/2015/07/4-Nature-Wallpapers-2014-1.jpg", "http://www.gannett-cdn.com/-mm-/ebba134b48d4840ef5fa962f5413dde0535b58f0/c=0-181-3257-4524&r=537&c=0-0-534-712/local/-/media/2015/08/24/DetroitFreePress/DetroitFreePress/635760455385917378-AP-Michigan-Media-Day-Footba-1-.jpg", "http://www.planwallpaper.com/static/images/2ba7dbaa96e79e4c81dd7808706d2bb7_large.jpg", "https://upload.wikimedia.org/wikipedia/commons/c/c8/Altja_j%C3%B5gi_Lahemaal.jpg", "http://kingofwallpapers.com/pictures-of-nature/pictures-of-nature-011.jpg"];
 
 
