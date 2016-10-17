@@ -1,23 +1,9 @@
 body {
-	margin: 0;
-	padding: 0;
-	font-family: 'Lato', sans-serif;
+  margin: 0;
+  padding: 0;
+  font-family: 'Lato', sans-serif;
 }
 
-.row > .column {
-  padding: 0 8px;
-}
-
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-.column {
-  float: left;
-  width: 25%;
-}
 
 /* The Modal (background) */
 .lightbox-background {
@@ -30,23 +16,36 @@ body {
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow: hidden;
   background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.85); /* Black w/ opacity */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
 }
 
 /* Modal Content */
 .lightbox-content {
   position: relative;
-  background-color: #fefefe;
   margin: auto;
   padding: 0;
-  width: 90%;
+  width: 60%;
   max-width: 1200px;
+  max-height: 100%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 #lightbox-pic {
-  background: transparent url(ring.gif) no-repeat scroll center center;
+  width: 100%; 
+}
+
+.grid-image {
+  cursor: pointer;
+}
+
+.grid-image:hover {
+  opacity:0.7;
+  transition: opacity .2s ease-out;
+  -moz-transition: opacity .2s ease-out;
+  -webkit-transition: opacity .2s ease-out;
+  -o-transition: opacity .2s ease-out;
 }
 
 /* The Close Button */
@@ -71,7 +70,24 @@ body {
 }
 */
 /* Next & previous buttons */
-#prev,
+#prev{
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  left: -15%;
+  -webkit-user-select: none;
+}
+
+/* Position the "next button" to the right */
 #next {
   cursor: pointer;
   position: absolute;
@@ -86,11 +102,7 @@ body {
   border-radius: 0 3px 3px 0;
   user-select: none;
   -webkit-user-select: none;
-}
-
-/* Position the "next button" to the right */
-#next {
-  right: 0;
+  right: -15%;
   border-radius: 3px 0 0 3px;
 }
 
@@ -104,26 +116,17 @@ body {
 #numPic {
   color: #f2f2f2;
   font-size: 12px;
-  padding: 8px 12px;
   position: absolute;
-  top: 0;
+  top: -30px;
+  left: 50%;
 }
 
-.caption-container {
+/*.caption-container {
   text-align: center;
-  background-color: black;
   padding: 2px 16px;
   color: white;
-}
-
-img.demo {
-  opacity: 0.6;
-}
-
-.active,
-.demo:hover {
-  opacity: 1;
-}
+  background: none;
+}*/
 
 img.hover-shadow {
   transition: 0.3s
@@ -134,35 +137,35 @@ img.hover-shadow {
 }
 
 #title {
-	margin: 5% 10%;
-	text-align: center;
+  margin: 5% 10%;
+  text-align: center;
 }
 
 #gallery {
-	overflow: hidden;
-	margin: 5% 10%;
+  overflow: hidden;
+  margin: 5% 10%;
 }
 
 /*Helps determine number of tiles per row*/
 .tile {
-	float: left;
-	position: relative;
-	width: 20%;
-	padding-bottom: 20%;
+  float: left;
+  position: relative;
+  width: 20%;
+  padding-bottom: 20%;
 }
 
 /*Holds image*/
 .thumbnail {
-	position: absolute;
+  position: absolute;
     left: 10px;
-	right: 10px;
-	top: 10px;
-	bottom: 10px;
-	overflow: hidden;
+  right: 10px;
+  top: 10px;
+  bottom: 10px;
+  overflow: hidden;
 }
 
 .thumbnail img {
-	width: 100%;
+  width: 100%;
 }
 
 /*If we want to add a caption*/
@@ -185,18 +188,18 @@ img.hover-shadow {
 
 /*Crops image (gives preview)*/
 .crop {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .crop img {
-	position: absolute;
-  	left: 50%;
-	top: 50%;
-	height: 100%;
-	width: auto;
+  position: absolute;
+    left: 50%;
+  top: 50%;
+  height: 100%;
+  width: auto;
     -webkit-transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
     transform: translate(-50%,-50%);

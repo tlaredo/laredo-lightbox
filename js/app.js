@@ -44,8 +44,8 @@ function generatePic(n) {
     else {
         document.getElementById("next").style.display = "block";
     }
-    document.getElementById("lightboxPic").src = imgArr[n];
-    document.getElementById("caption").innerHTML = capArr[n];
+    document.getElementById("lightbox-pic").src = imgArr[n];
+    // document.getElementById("caption").innerHTML = capArr[n];
     var nth = n++;
     document.getElementById("numPic").innerHTML = String(n) + "/" + String(total);
 
@@ -72,6 +72,7 @@ function ImageRepeat() {
 
         //Create image and set source 
         var image = document.createElement("IMG");
+        image.className = "grid-image"
         image.src = imgArr[i];
         image.alt = capArr[i];
         image.id = i;

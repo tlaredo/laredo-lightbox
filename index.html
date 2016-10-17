@@ -12,12 +12,6 @@
   </head>
   <body>
 
-    <!-- 
-    How to make image modal: http://www.w3schools.com/howto/howto_css_modal_images.asp
-    How to make lightbox gallery: http://www.w3schools.com/howto/howto_js_lightbox.asp 
-
-    -->
-
     <div id="title">
       <h1>Welcome!</h1>
     </div>
@@ -27,15 +21,13 @@
     <div id="lightbox" class="lightbox-background">
       <span class="close cursor" onclick="closeLightbox()">&times;</span>
       <div class="lightbox-content">
-
         <a id="prev" onclick="prevPic()">&#10094;</a>
         <a id="next" onclick="nextPic()">&#10095;</a>
-
         <div id="numPic"></div>
-        <img id="lightboxPic" src="" style="width: 100%">
-        <div class="caption-container">
+        <img id="lightbox-pic" src="">
+        <!-- <div class="caption-container">
           <p id="caption"></p>
-        </div>
+        </div> -->
       </div>
     </div>    
 
