@@ -4,7 +4,6 @@ body {
   font-family: 'Lato', sans-serif;
 }
 
-
 /* The Modal (background) */
 .lightbox-background {
   display: none;
@@ -136,14 +135,13 @@ img.hover-shadow {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
 }
 
-#title {
-  padding: 8% 7%;
+#gallery-info {
+  padding: 8% 9%;
   text-align: center;
   color: white;
   background-position: center !important;
   background-size: cover !important;
   background-repeat: no-repeat !important;
-  
 }
 
 #gallery {
