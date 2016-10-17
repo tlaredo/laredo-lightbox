@@ -1,123 +1,138 @@
-console.log("Hello");
+/* ================== TABLE OF CONTENTS ================
 
-// Process for loading photos:
-//  1. Get gallery_id for photo gallery using flickr.urls.lookupGallery(url)
-//  2. Get standard photo response from flickr.galleries.getPhotos(gallery_id, format)
-//      Retreive farm-id, server-id, id, secret-id, format and store them in 5 arrays
-//  3. Use these values to get photo source URL, in following format:
-//      https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
-//      Use string concatonation to generate URLs
+    1. Initialize global arrays and variables
+    2. Load Flickr API Functions
+    3. Populate Page with Images
+    4. Lightbox Functions
+
+   =============== END TABLE OF CONTENTS ===============
+*/
 
 
-// function loadDoc() {
-//     var xhttp = new XMLHttpRequest();
-//     xhttp.onreadystatechange = function() {
-//         if (this.readyState == 4 && this.status == 200) {
-//             document.getElementById("demo").innerHTML = this.responseText;
-//         }
-//     };
-//     xhttp.open("GET", "ajax_info.txt", true);
-//     xhttp.send();
-// }
+//  ===============  1. INITIALIZE GLOBAL ARRAYS AND VARIABLES ===============
 
+var imageURL = []; //Stores image URLs (created from generateURL())
+var photoID = []; //Stores image ids (from API response)
+var farmID = []; //Stores farm ids (from API response)
+var serverID = []; //Stores server ids (from API response)
+var secretID = []; //Stores secret ids (from API response)
+var total; //Stores total # of photos
+var currentPic = 0; //Used in lightbox functions
+
+//  ===============  END 1. INITIALIZE GLOBAL ARRAYS AND VARIABLES ===============
+
+
+//  ===============  2. LOAD FLICKR API FUNCTIONS ===============
+
+/* Process for loading photos:
+    Step 1. Get gallery_id for photo gallery using flickr.urls.lookupGallery(url)
+    Step 2. Get standard photo response from flickr.galleries.getPhotos(gallery_id, format)
+        Retreive farm-id, server-id, id, secret-id, format and store them in 5 arrays
+    Step 3. Use these values to get photo source URL, in following format:
+        https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
+        Use string concatonation to generate URLs
+*/
+
+// Step 1: Function to get gallery_id for photo gallery using flickr.urls.lookupGallery() method
 function getGallery_id() {
     var xmlGallery_id = new XMLHttpRequest();
+
+    // Function executes when we receive response from flickr API
     xmlGallery_id.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            var xmlDoc, gallery_id;
+            // Create gallery-specific variables
+            var xmlDoc, gallery_id, title, description, totalPhotos;
             var response = xmlGallery_id;
+            console.log(response);
+
+            //Parse through XML response
+            parser = new DOMParser();
+            xmlDoc = parser.parseFromString(this.response,"text/xml");
+
+            //Set gallery tags (e.g. num photos, title, description) from API response
+            gallery_id = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("id");
+            count_photos = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("count_photos");
+            title = xmlDoc.getElementsByTagName("title")[0].childNodes[0];
+            description = xmlDoc.getElementsByTagName("description")[0].childNodes[0];
+
+            //Once tags for gallery are loaded, call getPhotos to get set of photos from gallery
+            getPhotos(gallery_id);
+            total = count_photos; //Set global variable
+        }
+    };
+
+    // API call created by appending method and parameters to URL. We make REST request and receive XML response.
+    var apiCall = 'https://api.flickr.com/services/rest/?&method=flickr.urls.lookupGallery&api_key=cf93eae365c8cc4fdb8deb6116db8542&url=http://www.flickr.com/photos/flickr/galleries/72157669781709702/';
+
+    // Call API
+    xmlGallery_id.open("GET", apiCall, true);
+    xmlGallery_id.send();
+}
+
+
+//  Step 2: Function to get standard photo response from flickr.galleries.getPhotos() method. Extract farm-id, server-id, id, and secret-id and store them in 4 arrays
+function getPhotos(gallery_id) {
+    var xmlGetPhotos = new XMLHttpRequest();
+    xmlGetPhotos.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            // Create photo-specific variables
+            var xmlDoc, photo, id, secret, server, farm;
+            var response = xmlGetPhotos;
             console.log(response);
 
             parser = new DOMParser();
             xmlDoc = parser.parseFromString(this.response,"text/xml");
 
-            gallery_id = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("id");
-            console.log(gallery_id);
+            // Traverse through DOM to access id, farm, server, and secret ids from response. Store each value in their respective arrays.
+            for (var i = 0; i < total; ++i) {
+                photo = xmlDoc.getElementsByTagName("photo")[i];
+                photoID.push(photo.getAttribute("id"));
+                farmID.push(photo.getAttribute("farm"));
+                serverID.push(photo.getAttribute("server"));
+                secretID.push(photo.getAttribute("secret"));
+            }
 
-            // Call funciton for loading getPhotos
-            // getPhotos(gallery_id);
+            // With all photo data loaded, call generateURLs() to load imageURL array
+            generateURLs();
         }
-    };
+    }
 
-    // Call function for loading gallery_id
+    var apiCall = 'https://api.flickr.com/services/rest/?&method=flickr.galleries.getPhotos&api_key=cf93eae365c8cc4fdb8deb6116db8542&gallery_id='+gallery_id+'/';
 
-    xmlGallery_id.open("GET", "https://api.flickr.com/services/rest/?&method=flickr.urls.lookupGallery&api_key=cf93eae365c8cc4fdb8deb6116db8542&url=http://www.flickr.com/photos/flickr/galleries/72157669781709702/", true);
-    xmlGallery_id.send();
+    // Call API
+    xmlGetPhotos.open("GET", apiCall, true);
+    xmlGetPhotos.send();
+}
+
+// Step 3: Using ids from getPhotos function, use string concatonation to generate src URLs for each photo. Per flickr's API documentation, each photo's source is in the following format: https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
+function generateURLs() {
+    // Iterate through all ids in arrays and concat them together to get src URL. 
+    // Push result into imageURL array
+    for (var i = 0; i < total; ++i) {
+        var farm_id = farmID[i];
+        var server_id = serverID[i];
+        var photo_id = photoID[i];
+        var secret_id = secretID[i];
+        var URL = 'https://farm'+farm_id+'.staticflickr.com/'+server_id+'/'+photo_id+'_'+secret_id+'.jpg';
+        imageURL.push(URL);
+    }
+    console.log(imageURL.length)
+    console.log(imageURL);
+    // Call ImageRepeat() to populate page with images.
+    ImageRepeat();
 }
 
 getGallery_id();
 
-// function getPhotos(gallery_id) {
-//     var getPhotos = new XMLHttpRequest();
-//     getPhotos.onreadystatechange = function() {
-//         if (this.readyState == 4 && this.status == 200) {
-
-//         }
-//     }
+//  ===============  END 2. LOAD FLICKR API FUNCTIONS ===============
 
 
-//     getPhotos.open("GET", INSERT URL for API, true);
-//     getPhotos.send();
-// }
+//  ===============  3. POPULATE PAGE WITH IMAGES ===============
 
-// Call function for generating URLs with data from getPhotos
-
-// Prevent elements on page from loading once we get loadAPI finished
-
-var imgArr = ["https://static.pexels.com/photos/3247/nature-forest-industry-rails.jpg", "http://wellnesscounselingmilwaukee.com/wp-content/uploads/2015/07/4-Nature-Wallpapers-2014-1.jpg", "http://www.gannett-cdn.com/-mm-/ebba134b48d4840ef5fa962f5413dde0535b58f0/c=0-181-3257-4524&r=537&c=0-0-534-712/local/-/media/2015/08/24/DetroitFreePress/DetroitFreePress/635760455385917378-AP-Michigan-Media-Day-Footba-1-.jpg", "http://www.planwallpaper.com/static/images/2ba7dbaa96e79e4c81dd7808706d2bb7_large.jpg", "https://upload.wikimedia.org/wikipedia/commons/c/c8/Altja_j%C3%B5gi_Lahemaal.jpg", "http://kingofwallpapers.com/pictures-of-nature/pictures-of-nature-011.jpg"];
-
-var capArr = ["Railroad", "Park", "Desert Lake", "Boardwalk", "Fall Creek", "Summer River"];
-
-var total = imgArr.length;
-var currentPic = 0;
-
-function openLightbox() {
-  document.getElementById('lightbox').style.display = "block";
-}
-
-function closeLightbox() {
-  document.getElementById('lightbox').style.display = "none";
-}
-
-function nextPic() {
-  var next = window.currentPic;
-  next++;
-  generatePic(next);
-}
-
-function prevPic() {
-  var prev = window.currentPic;
-  prev--;
-  generatePic(prev);
-}
-
-function generatePic(n) {
-
-    window.currentPic = n;
-    console.log("currentPic is "+currentPic);
-    console.log("generating "+n+"th pic");
-    if (n <= 0) {
-        document.getElementById("prev").style.display = "none";
-    }
-    else {
-        document.getElementById("prev").style.display = "block";
-    }
-    if (n >= total - 1) {
-        document.getElementById("next").style.display = "none";
-    }
-    else {
-        document.getElementById("next").style.display = "block";
-    }
-    document.getElementById("lightbox-pic").src = imgArr[n];
-    // document.getElementById("caption").innerHTML = capArr[n];
-    var nth = n++;
-    document.getElementById("numPic").innerHTML = String(n) + "/" + String(total);
-
-}
-
+//Generates grid of images on page by creating HTML elements dynamically.
 function ImageRepeat() {
 
-    for (var i=0; i< imgArr.length; i++) {
+    for (var i=0; i< 15; i++) {
         
         //Create div with class "tile"
         var tile = document.createElement("div");
@@ -131,15 +146,12 @@ function ImageRepeat() {
         var crop = document.createElement("div");
         crop.className = "crop";
 
-        // var span = document.createElement('span');
-        // span.innerHTML = '<img id="'+i+'" src="'+imgArr[i]+'" alt="'+capArr[i]+'" onclick="openLightbox();currentPic('+i+')>';
-
-        //Create image and set source 
+        //Create image and set source, id, and onclick attributes
         var image = document.createElement("IMG");
         image.className = "grid-image"
-        image.src = imgArr[i];
-        image.alt = capArr[i];
+        image.src = imageURL[i];
         image.id = i;
+        //If you click on this photo, it activates lightbox and generates pic for this image's corresponding id.
         image.onclick = function() {openLightbox(); generatePic(this.id);};
         console.log(i);
         
@@ -154,11 +166,57 @@ function ImageRepeat() {
 
 }
 
-ImageRepeat();
+//  ===============  3. END POPULATE PAGE WITH IMAGES ===============
 
 
+//  ===================== 4. LIGHTBOX FUNCTIONS ========================
 
+// Activate lightbox (show lightbox div)
+function openLightbox() {
+  document.getElementById('lightbox').style.display = "block";
+}
 
+// Exit lightbox (hide lightbox div)
+function closeLightbox() {
+  document.getElementById('lightbox').style.display = "none";
+}
 
+// Goes to next pic (uses global variable 'currentPic' to generate next pic)
+function nextPic() {
+  var next = window.currentPic;
+  next++;
+  generatePic(next);
+}
 
+// Goes to previous pic (uses global variable 'currentPic' to generate prev pic)
+function prevPic() {
+  var prev = window.currentPic;
+  prev--;
+  generatePic(prev);
+}
 
+// Generates the photo to be displayed in the lightbox. Changes source of lightbox-pic with correct image URL. Also changes "{num_pic}/{total}" display.
+function generatePic(n) {
+
+    window.currentPic = n; //Reset curernt pic
+
+    //Prevent prev/next arrows from showing when on first/last photos (respectively)
+    if (n <= 0) {
+        document.getElementById("prev").style.display = "none";
+    }
+    else {
+        document.getElementById("prev").style.display = "block";
+    }
+    if (n >= total - 1) {
+        document.getElementById("next").style.display = "none";
+    }
+    else {
+        document.getElementById("next").style.display = "block";
+    }
+    document.getElementById("lightbox-pic").src = imageURL[n];
+    var nth = n++;
+    document.getElementById("numPic").innerHTML = String(n) + "/" + String(total);
+
+}
+
+//  ===================== END 4. LIGHTBOX FUNCTIONS ========================
