@@ -24,7 +24,7 @@ function getGallery_id() {
     var xmlGallery_id = new XMLHttpRequest();
     xmlGallery_id.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            var xmlDoc, gallery_id;
+            var xmlDoc, gallery_id, title, description, totalPhotos;
             var response = xmlGallery_id;
             console.log(response);
 
@@ -32,7 +32,13 @@ function getGallery_id() {
             xmlDoc = parser.parseFromString(this.response,"text/xml");
 
             gallery_id = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("id");
+            totalPhotos = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("count_photos");
+            title = xmlDoc.getElementsByTagName("title")[0].childNodes[0];
+            description = xmlDoc.getElementsByTagName("description")[0].childNodes[0];
             console.log(gallery_id);
+            console.log(totalPhotos);
+            console.log(title);
+            console.log(description);
 
             // Call funciton for loading getPhotos
             // getPhotos(gallery_id);
