@@ -4,6 +4,10 @@ body {
   font-family: 'Lato', sans-serif;
 }
 
+footer {
+  text-align: center;
+}
+
 /* The Modal (background) */
 .lightbox-background {
   display: none;
