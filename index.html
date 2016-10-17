@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Lato font -->
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+
+    <title>Laredo Photos</title>
+  </head>
+  <body>
+
+    <!-- 
+    How to make image modal: http://www.w3schools.com/howto/howto_css_modal_images.asp
+    How to make lightbox gallery: http://www.w3schools.com/howto/howto_js_lightbox.asp 
+
+    -->
+
+    <div id="title">
+      <h1>Welcome!</h1>
+    </div>
+
+    <div id="gallery"></div>
+
+    <div id="lightbox" class="lightbox-background">
+      <span class="close cursor" onclick="closeLightbox()">&times;</span>
+      <div class="lightbox-content">
+
+        <a id="prev" onclick="prevPic()">&#10094;</a>
+        <a id="next" onclick="nextPic()">&#10095;</a>
+
+        <div id="numPic"></div>
+        <img id="lightboxPic" src="" style="width: 100%">
+        <div class="caption-container">
+          <p id="caption"></p>
+        </div>
+      </div>
+    </div>    
+
+    <script src="js/app.js"></script>
+  </body>
+</html>
