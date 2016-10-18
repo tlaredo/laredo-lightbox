@@ -220,10 +220,12 @@ function openLightbox() {
 function closeLightbox(event) {
     console.log(event.target.className);
     if (event.target.className == "lightbox-background") {
-            document.getElementById('lightbox').style.display = "none";
+        document.getElementById('lightbox').style.display = "none";
+        document.getElementById('back-to-home').style.display = "block";
     }
     if (event.target.className == "close cursor") {
-            document.getElementById('lightbox').style.display = "none";
+        document.getElementById('lightbox').style.display = "none";
+        document.getElementById('back-to-home').style.display = "block";
     }
 }
 
@@ -245,6 +247,7 @@ var completed = false;
 
 // Generates the photo to be displayed in the lightbox. Changes source of lightbox-pic with correct image URL. Also changes "{num_pic}/{total}" display.
 function generatePic(n) {
+    document.getElementById('back-to-home').style.display = "none";
     
     if (n == total) {
         n = 0;
