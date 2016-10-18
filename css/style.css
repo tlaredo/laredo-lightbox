@@ -34,11 +34,16 @@ footer {
   text-align: center;
 }
 
+.action-links {
+  font-size: 1.75em;
+}
+
 .container {
   padding: 3% 15%;
 }
 
 #back-to-home {
+    display: none;
     position: absolute;
     margin: 7px;
     padding: 10px;
@@ -223,6 +228,7 @@ img.hover-shadow {
 
 #gallery-info a {
   color: white;
+  overflow-wrap: break-word;
 }
 
 #gallery {

@@ -210,6 +210,7 @@ function ImageRepeat() {
     }
 
     document.querySelector('footer').style.display = "block";
+    document.getElementById('back-to-home').style.display = "block";
 
     console.log("successfully loaded images");
 
