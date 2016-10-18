@@ -98,7 +98,7 @@ footer {
   margin-top: -50px;
   color: white;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 40px;
   transition: 0.6s ease;
   border-radius: 3px;
   user-select: none;
@@ -116,7 +116,7 @@ footer {
   margin-top: -50px;
   color: white;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 40px;
   transition: 0.6s ease;
   border-radius: 3px;
   user-select: none;
@@ -128,7 +128,9 @@ footer {
 /* On hover, add a black background color with a little bit see-through */
 #prev:hover,
 #next:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+  color: #999;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 /* Number text (1/3 etc) */
@@ -139,13 +141,6 @@ footer {
   top: -30px;
   left: 50%;
 }
-
-/*.caption-container {
-  text-align: center;
-  padding: 2px 16px;
-  color: white;
-  background: none;
-}*/
 
 img.hover-shadow {
   transition: 0.3s
@@ -191,24 +186,6 @@ img.hover-shadow {
   width: 100%;
 }
 
-/*If we want to add a caption*/
-/*.thumbnail .titleBox {
-   position: absolute;
-   bottom: 0;
-   left: 0;
-   right: 0;
-   margin-bottom: -50px;
-   background: #000;
-   background: rgba(0, 0, 0, 0.5);
-   color: #FFF;
-   padding: 10px;
-   text-align: center;
-   -webkit-transition: all 0.3s ease-out;
-   -moz-transition: all 0.3s ease-out;
-   -o-transition: all 0.3s ease-out;
-   transition: all 0.3s ease-out;
-}*/
-
 /*Crops image (gives preview)*/
 .crop {
   position: relative;
@@ -234,45 +211,61 @@ img.hover-shadow {
 
 /* Smartphone view: 1 tile */
 @media only screen and (max-width : 480px) {
-   .square {
-      width: 100%;
-      height: auto;
-   }
-   .portrait {
-      width: 100%;
-      height: auto;
-   }
-   .tile {
-      width: 100%;
-      padding-bottom: 100%;
-   }
+  #next {
+    top: 25%;
+    right: -25%;
+  }
+  #prev {
+    top: 25%;
+    left: -25%;
+  }
+  .square {
+    width: 100%;
+    height: auto;
+  }
+  .portrait {
+    width: 100%;
+    height: auto;
+  }
+  .tile {
+    width: 100%;
+    padding-bottom: 100%;
+  }
 }
 /* Tablet view: 2 tiles */
 @media only screen and (max-width : 650px) and (min-width : 481px) {
-   .square {
-      width: 100%;
-      height: auto;
-   }
-   .portrait {
-      width: 100%;
-      height: auto;
-   }
-   .tile {
-      width: 50%;
-      padding-bottom: 50%;
-   }
+  #next {
+    top: 33.3%;
+    right: -20%;
+  }
+  #prev {
+    top: 33.3%;
+    left: -20%;
+  }
+  .square {
+    width: 100%;
+    height: auto;
+  }
+  .portrait {
+    width: 100%;
+    height: auto;
+  }
+  .tile {
+    width: 50%;
+    padding-bottom: 50%;
+  }
 }
 /* Small desktop / tablet view: 3 tiles */
 @media only screen and (max-width : 1050px) and (min-width : 651px) {
-   .tile {
-      width: 33.3%;
-      padding-bottom: 33.3%;
-   }
+  .tile {
+    width: 33.3%;
+    padding-bottom: 33.3%;
+  }
 }
 /* Medium desktop: 4 tiles */
 @media only screen and (max-width : 1290px) and (min-width : 1051px) {
-   .tile {
-      width: 25%;
-      padding-bottom: 25%;
-   }
+  .tile {
+    width: 25%;
+    padding-bottom: 25%;
+  }
 }

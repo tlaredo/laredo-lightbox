@@ -241,22 +241,31 @@ var completed = false;
 
 // Generates the photo to be displayed in the lightbox. Changes source of lightbox-pic with correct image URL. Also changes "{num_pic}/{total}" display.
 function generatePic(n) {
+    
+    if (n == total) {
+        n = 0;
+    }
 
-    window.currentPic = n; //Reset curernt pic
+    if (n === -1) {
+        n = total - 1;
+    }
+
+    window.currentPic = n; //Reset current pic
+
 
     //Prevent prev/next arrows from showing when on first/last photos (respectively)
-    if (n <= 0) {
-        document.getElementById("prev").style.display = "none";
-    }
-    else {
-        document.getElementById("prev").style.display = "block";
-    }
-    if (n >= total - 1) {
-        document.getElementById("next").style.display = "none";
-    }
-    else {
-        document.getElementById("next").style.display = "block";
-    }
+    // if (n <= 0) {
+    //     document.getElementById("prev").style.display = "none";
+    // }
+    // else {
+    //     document.getElementById("prev").style.display = "block";
+    // }
+    // if (n >= total - 1) {
+    //     document.getElementById("next").style.display = "none";
+    // }
+    // else {
+    //     document.getElementById("next").style.display = "block";
+    // }
 
     var height, width;
     var img = new Image();
@@ -269,9 +278,13 @@ function generatePic(n) {
             console.log("Landscape photo");
             document.getElementById("lightbox-pic").className = "landscape";
         }
-        else {
+        else if (height > width) {
             console.log("Portrait photo");
             document.getElementById("lightbox-pic").className = "portrait";
+        }
+        else {
+            console.log("Square photo");
+            document.getElementById("lightbox-pic").className = "square";
         }
     }
     img.src = imageURL[n];
