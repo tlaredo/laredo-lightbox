@@ -137,33 +137,33 @@ function generateURLs() {
 // Set primary cover photo based on API response
 function setPrimaryPhoto(id, secret, server, farm) {
     var URL = 'https://farm'+farm+'.staticflickr.com/'+server+'/'+id+'_'+secret+'.jpg';
-    // Gradient background (black)
     document.getElementById("gallery-info").style.background = 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.75)), url('+URL+')';
-    // Gradient background (white)
-    // document.getElementById("title").style.background = 'linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.75)), url('+URL+')';
 }
 
 // Set gallery title, description, and total number of photos based on API response
 function galleryInfo(title, description, countPhotos) {
-    console.log(title);
-    console.log(description);
-    console.log(countPhotos);
+    //Create h1 tag for gallery title
     var galleryTitle = document.createElement("h1");
     galleryTitle.className = "gallery-title";
     galleryTitle.innerHTML = title;
+
+    //Create h3 tag for gallery description
     var galleryDescription = document.createElement("h3");
     galleryDescription.className = "gallery-description";
     galleryDescription.innerHTML = description;
+    
+    //Create h3 tag for photo count
     var galleryPhotoCount = document.createElement("h3");
     galleryPhotoCount.className = "gallery-photo-count";
     galleryPhotoCount.innerHTML = countPhotos+" photos";
 
+    //Create a tag for gallery URL
     var galleryURL = document.createElement("a");
     galleryURL.href = "https://www.flickr.com/photos/flickr/galleries/72157669781709702/";
     galleryURL.innerHTML = "https://www.flickr.com/photos/flickr/galleries/72157669781709702/";
     galleryURL.target = "_blank";
-    console.log(galleryURL);
 
+    //Append all tags to gallery-info ID
     document.getElementById("gallery-info").appendChild(galleryTitle);
     document.getElementById("gallery-info").appendChild(galleryDescription);
     document.getElementById("gallery-info").appendChild(galleryPhotoCount);
@@ -228,7 +228,6 @@ function openLightbox() {
 
 // Exit lightbox (hide lightbox div)
 function closeLightbox(event) {
-    console.log(event.target.className);
     if (event.target.className == "lightbox-background") {
         document.getElementById('lightbox').style.display = "none";
         document.getElementById('back-to-home').style.display = "block";
@@ -290,7 +289,6 @@ function generatePic(n) {
     img.onload = function(){
         height = img.height;
         width = img.width;
-        console.log(height+' x '+width);
         if (height < width) {
             document.getElementById("lightbox-pic").className = "landscape";
         }
