@@ -24,6 +24,7 @@
     <meta name="msapplication-TileImage" content="static/favicons/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="css/style.css">
     <!-- Lato font -->
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
@@ -31,22 +32,29 @@
     <title>Laredo Lightbox</title>
   </head>
   <body>
+    <!-- Back Button -->
     <div id="back-to-home">
       <a href="/">&#10094; Back to Home</a>
     </div>
 
-    <div id="gallery-info">
-    </div>
+    <!-- Contains cover photo, gallery title, description, num photos, gallery URL -->
+    <div id="gallery-info"></div>
 
+    <!-- Gets populated with photos dynamically -->
     <div id="gallery"></div>
 
+    <!-- Div for displaying lightbox. Default display is "none" -->
     <div id="lightbox" class="lightbox-background" onclick="closeLightbox(event)">
-      <!-- Add function document.addEventListener("click", function), where function determines if div clicked was NOT lightbox-content or close cursor -->
+      <!-- Exit button -->
       <span class="close cursor" onclick="closeLightbox(event)">&times;</span>
+      <!-- Lightbox content -->
       <div class="lightbox-content">
+        <!-- Next/Prev Buttons -->
         <a id="prev" class="navButtons" onclick="prevPic()">&#10094;</a>
         <a id="next" class="navButtons" onclick="nextPic()">&#10095;</a>
-        <div id="numPic"></div>
+        <!-- Photo counter -->
+        <div id="num-pic"></div>
+        <!-- Lightbox image -->
         <img id="lightbox-pic" src="">
       </div>
     </div>    

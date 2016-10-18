@@ -34,14 +34,160 @@ footer {
   text-align: center;
 }
 
+/* ========= HOMEPAGE ========= */
+
+/* links for "View Demo" and "GitHub Repo" */
 .action-links {
   font-size: 1.75em;
 }
 
+/* Page content */
 .container {
   padding: 3% 15%;
 }
 
+/* Cover photo */
+#homepage-cover {
+  padding: 8% 9%;
+  text-align: center;
+  color: white;
+  background-position: center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), url("../static/images/photo-albums.jpg");
+}
+
+/* ========= END HOMEPAGE ========= */
+
+/* ========== LIGHTBOX ========== */
+
+/* Dark background surrounding photo */
+.lightbox-background {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Holds photo and next/prev */
+.lightbox-content {
+  position: relative;
+  margin: 0 auto;
+  padding: 0;
+  width: 60%;
+  height: 80%;
+  max-width: 70%;
+  max-height: 100%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.lightbox-content img {
+  display: block;
+}
+
+/* If photo is portrait, set restricting dimension to height */
+.portrait {
+  height: 100%;
+  margin: 0 auto;
+}
+
+/* If photo is portrait, set restricting dimension to width */
+.landscape {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* If photo is square, set restricting dimension to height (change in media query at smaller devices) */
+.square {
+  height: 100%;
+  margin: 0 auto;
+}
+
+/* Close Button */
+.close {
+  color: white;
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #999;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Previous button */
+#prev{
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 40px;
+  transition: 0.6s ease;
+  border-radius: 3px;
+  user-select: none;
+  left: -15%;
+  -webkit-user-select: none;
+}
+
+/* Next button */
+#next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 40px;
+  transition: 0.6s ease;
+  border-radius: 3px;
+  user-select: none;
+  -webkit-user-select: none;
+  right: -15%;
+  border-radius: 3px;
+}
+
+/* On hover, shade both buttons slightly */
+#prev:hover,
+#next:hover {
+  color: #999;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Pic number in gallery (1/3 etc) */
+#num-pic {
+  color: #f2f2f2;
+  font-size: 12px;
+  position: absolute;
+  top: -30px;
+  left: 50%;
+}
+
+/* ========== END LIGHTBOX ========== */
+
+
+/* ========= DEMO GRID ========= */
+
+/* Back button */
 #back-to-home {
     display: none;
     position: absolute;
@@ -65,158 +211,7 @@ footer {
   text-decoration: none;
 }
 
-/* The Modal (background) */
-.lightbox-background {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  padding-top: 100px;
-  padding-bottom: 100px;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: scroll;
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
-}
-
-/* Modal Content */
-.lightbox-content {
-  position: relative;
-  margin: 0 auto;
-  padding: 0;
-  width: 60%;
-  height: 80%;
-  max-width: 70%;
-  max-height: 100%;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.lightbox-content img {
-  display: block;
-}
-
-.portrait {
-  height: 100%;
-  margin: 0 auto;
-}
-
-.landscape {
-  width: 100%;
-  margin: 0 auto;
-}
-
-.square {
-  height: 100%;
-  margin: 0 auto;
-}
-
-.grid-image {
-  cursor: pointer;
-}
-
-.grid-image:hover {
-  opacity:0.7;
-  transition: opacity .2s ease-out;
-  -moz-transition: opacity .2s ease-out;
-  -webkit-transition: opacity .2s ease-out;
-  -o-transition: opacity .2s ease-out;
-}
-
-/* The Close Button */
-.close {
-  color: white;
-  position: absolute;
-  top: 10px;
-  right: 25px;
-  font-size: 35px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: #999;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-/*.mySlides {
-  display: none;
-}
-*/
-/* Next & previous buttons */
-#prev{
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  width: auto;
-  padding: 16px;
-  margin-top: -50px;
-  color: white;
-  font-weight: bold;
-  font-size: 40px;
-  transition: 0.6s ease;
-  border-radius: 3px;
-  user-select: none;
-  left: -15%;
-  -webkit-user-select: none;
-}
-
-/* Position the "next button" to the right */
-#next {
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  width: auto;
-  padding: 16px;
-  margin-top: -50px;
-  color: white;
-  font-weight: bold;
-  font-size: 40px;
-  transition: 0.6s ease;
-  border-radius: 3px;
-  user-select: none;
-  -webkit-user-select: none;
-  right: -15%;
-  border-radius: 3px;
-}
-
-/* On hover, add a black background color with a little bit see-through */
-#prev:hover,
-#next:hover {
-  color: #999;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-/* Number text (1/3 etc) */
-#numPic {
-  color: #f2f2f2;
-  font-size: 12px;
-  position: absolute;
-  top: -30px;
-  left: 50%;
-}
-
-img.hover-shadow {
-  transition: 0.3s
-}
-
-.hover-shadow:hover {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
-}
-
-#homepage-cover {
-  padding: 8% 9%;
-  text-align: center;
-  color: white;
-  background-position: center !important;
-  background-size: cover !important;
-  background-repeat: no-repeat !important;
-  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), url("../static/images/photo-albums.jpg");
-}
-
+/* Holds gallery info and cover photo (source is set dynamically) */
 #gallery-info {
   padding: 8% 9%;
   text-align: center;
@@ -231,12 +226,13 @@ img.hover-shadow {
   overflow-wrap: break-word;
 }
 
+/* Holds all dynamically created elements*/
 #gallery {
   overflow: hidden;
   margin: 5% 10%;
 }
 
-/*Helps determine number of tiles per row*/
+/*Helps determine number of tiles per row (used in media queries) */
 .tile {
   float: left;
   position: relative;
@@ -247,7 +243,7 @@ img.hover-shadow {
 /*Holds image*/
 .thumbnail {
   position: absolute;
-    left: 10px;
+  left: 10px;
   right: 10px;
   top: 10px;
   bottom: 10px;
@@ -258,7 +254,7 @@ img.hover-shadow {
   width: 100%;
 }
 
-/*Crops image (gives preview)*/
+/*Crops image to square (gives preview)*/
 .crop {
   position: relative;
   width: 100%;
@@ -268,21 +264,36 @@ img.hover-shadow {
 
 .crop img {
   position: absolute;
-    left: 50%;
+  left: 50%;
   top: 50%;
   height: 100%;
   width: auto;
-    -webkit-transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
-    transform: translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
 }
 
-/*body.no-touch .thumbnail:hover .titleBox, body.touch .thumbnail.touchFocus .titleBox {
-   margin-bottom: 0;
-}*/
+/* Gives image hover effect */
+.grid-image {
+  cursor: pointer;
+}
+
+.grid-image:hover {
+  opacity:0.7;
+  transition: opacity .2s ease-out;
+  -moz-transition: opacity .2s ease-out;
+  -webkit-transition: opacity .2s ease-out;
+  -o-transition: opacity .2s ease-out;
+}
+
+
+/* ========= END DEMO GRID ========= */
+
+/* ========= MEDIA QUERIES ======== */
 
 /* Smartphone view: 1 tile */
 @media only screen and (max-width : 480px) {
+  /* Move next/prev buttons to top 1/4 of screen */
   #next {
     top: 25%;
     right: -25%;
@@ -291,6 +302,7 @@ img.hover-shadow {
     top: 25%;
     left: -25%;
   }
+  /* If image is square, set width to be limiting dimension*/
   .square {
     width: 100%;
     height: auto;
@@ -306,6 +318,7 @@ img.hover-shadow {
 }
 /* Tablet view: 2 tiles */
 @media only screen and (max-width : 650px) and (min-width : 481px) {
+  /* Move next/prev buttons to top 1/3 of screen */
   #next {
     top: 33.3%;
     right: -20%;
@@ -314,6 +327,7 @@ img.hover-shadow {
     top: 33.3%;
     left: -20%;
   }
+  /* If image is square, set width to be limiting dimension*/
   .square {
     width: 100%;
     height: auto;

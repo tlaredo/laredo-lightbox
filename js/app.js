@@ -26,25 +26,25 @@ var currentPic = 0; //Used in lightbox functions
 
 /* Process for loading photos with Flickr API:
     Step 1. Get gallery_id for photo gallery using flickr.urls.lookupGallery(url)
-    Step 2. Get standard photo response (XML format) from flickr.galleries.getPhotos(gallery_id, format)
-        -> Retreive farm-id, server-id, id, secret-id, format and store them in 5 arrays
+    Step 2. Get standard photo response (XML format) from flickr.galleries.getPhotos(gallery_id)
+        -> Retreive farm, server, id, and secret ids and store them in 4 arrays
     Step 3. Use these values to get photo source URL, in following format:
-        https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
+        https://farm{farm}.staticflickr.com/{server}/{id}_{secret}.jpg
         Use string concatonation to generate URLs
 */
 
 // Step 1: Function to get gallery_id for photo gallery using flickr.urls.lookupGallery() method
-function getGallery_id() {
-    var xmlGallery_id = new XMLHttpRequest();
+function getGalleryID() {
+    var xmlGalleryId = new XMLHttpRequest();
 
     // Function executes when we receive response from flickr API
-    xmlGallery_id.onreadystatechange = function() {
+    xmlGalleryId.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             // Create gallery-specific variables
-            var xmlDoc, gallery_id, title, description, totalPhotos;
+            var xmlDoc, galleryID, title, description, countPhotos;
             // Used to generate primary photo
-            var primary_id, primary_secret, primary_server, primary_farm;
-            var response = xmlGallery_id;
+            var primaryID, primaryServer, primaryFarm, primarySecret;
+            var response = xmlGalleryId;
             console.log(response);
 
             //Parse through XML response
@@ -52,26 +52,26 @@ function getGallery_id() {
             xmlDoc = parser.parseFromString(this.response,"text/xml");
 
             //Set gallery tags (e.g. num photos, title, description) from API response
-            gallery_id = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("id");
-            count_photos = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("count_photos");
+            galleryID = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("id");
+            countPhotos = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("count_photos");
             title = xmlDoc.getElementsByTagName('title')[0].childNodes[0].data;
             description = xmlDoc.getElementsByTagName('description')[0].childNodes[0].data;
             
             // Set primary photo attributes
-            primary_id = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("primary_photo_id");
-            primary_server = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("primary_photo_server");
-            primary_farm = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("primary_photo_farm");
-            primary_secret = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("primary_photo_secret");
+            primaryID = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("primary_photo_id");
+            primaryServer = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("primary_photo_server");
+            primaryFarm = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("primary_photo_farm");
+            primarySecret = xmlDoc.getElementsByTagName("gallery")[0].getAttribute("primary_photo_secret");
 
             // Set gallery info
-            galleryInfo(title, description, count_photos);
+            galleryInfo(title, description, countPhotos);
 
             // Set primary cover photo
-            setPrimaryPhoto(primary_id, primary_secret, primary_server, primary_farm);
+            setPrimaryPhoto(primaryID, primarySecret, primaryServer, primaryFarm);
 
             //Once tags for gallery are loaded, call getPhotos to get set of photos from gallery
-            getPhotos(gallery_id);
-            total = count_photos; //Set global variable
+            getPhotos(galleryID);
+            total = countPhotos; //Set global variable
         }
     };
 
@@ -79,8 +79,8 @@ function getGallery_id() {
     var apiCall = 'https://api.flickr.com/services/rest/?&method=flickr.urls.lookupGallery&api_key=cf93eae365c8cc4fdb8deb6116db8542&url=http://www.flickr.com/photos/flickr/galleries/72157669781709702/';
 
     // Call API
-    xmlGallery_id.open("GET", apiCall, true);
-    xmlGallery_id.send();
+    xmlGalleryId.open("GET", apiCall, true);
+    xmlGalleryId.send();
 }
 
 //  Step 2: Function to get standard photo response from flickr.galleries.getPhotos() method. Extract farm-id, server-id, id, and secret-id and store them in 4 arrays
@@ -89,7 +89,7 @@ function getPhotos(gallery_id) {
     xmlGetPhotos.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             // Create photo-specific variables
-            var xmlDoc, photo, id, secret, server, farm;
+            var xmlDoc, photo;
             var response = xmlGetPhotos;
             console.log(response);
 
@@ -122,11 +122,11 @@ function generateURLs() {
     // Iterate through all ids in arrays and concat them together to get src URL. 
     // Push result into imageURL array
     for (var i = 0; i < total; ++i) {
-        var farm_id = farmID[i];
-        var server_id = serverID[i];
-        var photo_id = photoID[i];
-        var secret_id = secretID[i];
-        var URL = 'https://farm'+farm_id+'.staticflickr.com/'+server_id+'/'+photo_id+'_'+secret_id+'.jpg';
+        var farm = farmID[i];
+        var server = serverID[i];
+        var id = photoID[i];
+        var secret = secretID[i];
+        var URL = 'https://farm'+farm+'.staticflickr.com/'+server+'/'+id+'_'+secret+'.jpg';
         imageURL.push(URL);
     }
     console.log(imageURL);
@@ -135,8 +135,8 @@ function generateURLs() {
 }
 
 // Set primary cover photo based on API response
-function setPrimaryPhoto(photo_id, secret_id, server_id, farm_id) {
-    var URL = 'https://farm'+farm_id+'.staticflickr.com/'+server_id+'/'+photo_id+'_'+secret_id+'.jpg';
+function setPrimaryPhoto(id, secret, server, farm) {
+    var URL = 'https://farm'+farm+'.staticflickr.com/'+server+'/'+id+'_'+secret+'.jpg';
     // Gradient background (black)
     document.getElementById("gallery-info").style.background = 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.75)), url('+URL+')';
     // Gradient background (white)
@@ -144,19 +144,19 @@ function setPrimaryPhoto(photo_id, secret_id, server_id, farm_id) {
 }
 
 // Set gallery title, description, and total number of photos based on API response
-function galleryInfo(title, description, count_photos) {
+function galleryInfo(title, description, countPhotos) {
     console.log(title);
     console.log(description);
-    console.log(count_photos);
-    var gallery_title = document.createElement("h1");
-    gallery_title.className = "gallery-title";
-    gallery_title.innerHTML = title;
-    var gallery_description = document.createElement("h3");
-    gallery_description.className = "gallery-description";
-    gallery_description.innerHTML = description;
-    var gallery_photo_count = document.createElement("h3");
-    gallery_photo_count.className = "gallery-photo-count";
-    gallery_photo_count.innerHTML = count_photos+" photos";
+    console.log(countPhotos);
+    var galleryTitle = document.createElement("h1");
+    galleryTitle.className = "gallery-title";
+    galleryTitle.innerHTML = title;
+    var galleryDescription = document.createElement("h3");
+    galleryDescription.className = "gallery-description";
+    galleryDescription.innerHTML = description;
+    var galleryPhotoCount = document.createElement("h3");
+    galleryPhotoCount.className = "gallery-photo-count";
+    galleryPhotoCount.innerHTML = countPhotos+" photos";
 
     var galleryURL = document.createElement("a");
     galleryURL.href = "https://www.flickr.com/photos/flickr/galleries/72157669781709702/";
@@ -164,13 +164,13 @@ function galleryInfo(title, description, count_photos) {
     galleryURL.target = "_blank";
     console.log(galleryURL);
 
-    document.getElementById("gallery-info").appendChild(gallery_title);
-    document.getElementById("gallery-info").appendChild(gallery_description);
-    document.getElementById("gallery-info").appendChild(gallery_photo_count);
+    document.getElementById("gallery-info").appendChild(galleryTitle);
+    document.getElementById("gallery-info").appendChild(galleryDescription);
+    document.getElementById("gallery-info").appendChild(galleryPhotoCount);
     document.getElementById("gallery-info").appendChild(galleryURL);
 }
 
-getGallery_id();
+getGalleryID();
 
 //  ===============  END 2. LOAD FLICKR API FUNCTIONS ===============
 
@@ -304,7 +304,7 @@ function generatePic(n) {
     img.src = imageURL[n];
     document.getElementById("lightbox-pic").src = imageURL[n];
     var nth = n++;
-    document.getElementById("numPic").innerHTML = String(n) + "/" + String(total);
+    document.getElementById("num-pic").innerHTML = String(n) + "/" + String(total);
 
 }
 
