@@ -83,35 +83,6 @@ function getGallery_id() {
     xmlGallery_id.send();
 }
 
-
-function setPrimaryPhoto(photo_id, secret_id, server_id, farm_id) {
-    var URL = 'https://farm'+farm_id+'.staticflickr.com/'+server_id+'/'+photo_id+'_'+secret_id+'.jpg';
-    // Gradient background (black)
-    document.getElementById("gallery-info").style.background = 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.75)), url('+URL+')';
-    // Gradient background (white)
-    // document.getElementById("title").style.background = 'linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.75)), url('+URL+')';
-}
-
-function galleryInfo(title, description, count_photos) {
-    console.log(title);
-    console.log(description);
-    console.log(count_photos);
-    var gallery_title = document.createElement("h1");
-    gallery_title.className = "gallery-title";
-    gallery_title.innerHTML = title;
-    var gallery_description = document.createElement("h4");
-    gallery_description.className = "gallery-description";
-    gallery_description.innerHTML = description;
-    var gallery_photo_count = document.createElement("h4");
-    gallery_photo_count.className = "gallery-photo-count";
-    gallery_photo_count.innerHTML = count_photos+" photos";
-    
-    document.getElementById("gallery-info").appendChild(gallery_title);
-    document.getElementById("gallery-info").appendChild(gallery_description);
-    document.getElementById("gallery-info").appendChild(gallery_photo_count);
-}
-
-
 //  Step 2: Function to get standard photo response from flickr.galleries.getPhotos() method. Extract farm-id, server-id, id, and secret-id and store them in 4 arrays
 function getPhotos(gallery_id) {
     var xmlGetPhotos = new XMLHttpRequest();
@@ -162,6 +133,35 @@ function generateURLs() {
     console.log(imageURL);
     // Call ImageRepeat() to populate page with images.
     ImageRepeat();
+}
+
+// Set primary cover photo based on API response
+function setPrimaryPhoto(photo_id, secret_id, server_id, farm_id) {
+    var URL = 'https://farm'+farm_id+'.staticflickr.com/'+server_id+'/'+photo_id+'_'+secret_id+'.jpg';
+    // Gradient background (black)
+    document.getElementById("gallery-info").style.background = 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.75)), url('+URL+')';
+    // Gradient background (white)
+    // document.getElementById("title").style.background = 'linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.75)), url('+URL+')';
+}
+
+// Set gallery title, description, and total number of photos based on API response
+function galleryInfo(title, description, count_photos) {
+    console.log(title);
+    console.log(description);
+    console.log(count_photos);
+    var gallery_title = document.createElement("h1");
+    gallery_title.className = "gallery-title";
+    gallery_title.innerHTML = title;
+    var gallery_description = document.createElement("h4");
+    gallery_description.className = "gallery-description";
+    gallery_description.innerHTML = description;
+    var gallery_photo_count = document.createElement("h4");
+    gallery_photo_count.className = "gallery-photo-count";
+    gallery_photo_count.innerHTML = count_photos+" photos";
+    
+    document.getElementById("gallery-info").appendChild(gallery_title);
+    document.getElementById("gallery-info").appendChild(gallery_description);
+    document.getElementById("gallery-info").appendChild(gallery_photo_count);
 }
 
 getGallery_id();
@@ -237,6 +237,8 @@ function prevPic() {
   generatePic(prev);
 }
 
+var completed = false;
+
 // Generates the photo to be displayed in the lightbox. Changes source of lightbox-pic with correct image URL. Also changes "{num_pic}/{total}" display.
 function generatePic(n) {
 
@@ -255,6 +257,24 @@ function generatePic(n) {
     else {
         document.getElementById("next").style.display = "block";
     }
+
+    var height, width;
+    var img = new Image();
+
+    img.onload = function(){
+        height = img.height;
+        width = img.width;
+        console.log(height+' x '+width);
+        if (height < width) {
+            console.log("Landscape photo");
+            document.getElementById("lightbox-pic").className = "landscape";
+        }
+        else {
+            console.log("Portrait photo");
+            document.getElementById("lightbox-pic").className = "portrait";
+        }
+    }
+    img.src = imageURL[n];
     document.getElementById("lightbox-pic").src = imageURL[n];
     var nth = n++;
     document.getElementById("numPic").innerHTML = String(n) + "/" + String(total);
