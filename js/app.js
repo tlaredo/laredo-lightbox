@@ -151,16 +151,23 @@ function galleryInfo(title, description, count_photos) {
     var gallery_title = document.createElement("h1");
     gallery_title.className = "gallery-title";
     gallery_title.innerHTML = title;
-    var gallery_description = document.createElement("h4");
+    var gallery_description = document.createElement("h3");
     gallery_description.className = "gallery-description";
     gallery_description.innerHTML = description;
-    var gallery_photo_count = document.createElement("h2");
+    var gallery_photo_count = document.createElement("h3");
     gallery_photo_count.className = "gallery-photo-count";
     gallery_photo_count.innerHTML = count_photos+" photos";
-    
+
+    var galleryURL = document.createElement("a");
+    galleryURL.href = "https://www.flickr.com/photos/flickr/galleries/72157669781709702/";
+    galleryURL.innerHTML = "https://www.flickr.com/photos/flickr/galleries/72157669781709702/";
+    galleryURL.target = "_blank";
+    console.log(galleryURL);
+
     document.getElementById("gallery-info").appendChild(gallery_title);
     document.getElementById("gallery-info").appendChild(gallery_description);
     document.getElementById("gallery-info").appendChild(gallery_photo_count);
+    document.getElementById("gallery-info").appendChild(galleryURL);
 }
 
 getGallery_id();
@@ -202,6 +209,9 @@ function ImageRepeat() {
         document.getElementById("gallery").appendChild(tile);
     }
 
+    document.querySelector('footer').style.display = "block";
+    document.getElementById('back-to-home').style.display = "block";
+
     console.log("successfully loaded images");
 
 }
@@ -220,10 +230,12 @@ function openLightbox() {
 function closeLightbox(event) {
     console.log(event.target.className);
     if (event.target.className == "lightbox-background") {
-            document.getElementById('lightbox').style.display = "none";
+        document.getElementById('lightbox').style.display = "none";
+        document.getElementById('back-to-home').style.display = "block";
     }
     if (event.target.className == "close cursor") {
-            document.getElementById('lightbox').style.display = "none";
+        document.getElementById('lightbox').style.display = "none";
+        document.getElementById('back-to-home').style.display = "block";
     }
 }
 
@@ -245,6 +257,7 @@ var completed = false;
 
 // Generates the photo to be displayed in the lightbox. Changes source of lightbox-pic with correct image URL. Also changes "{num_pic}/{total}" display.
 function generatePic(n) {
+    document.getElementById('back-to-home').style.display = "none";
     
     if (n == total) {
         n = 0;

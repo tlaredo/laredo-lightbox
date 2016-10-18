@@ -28,12 +28,32 @@
     <!-- Lato font -->
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 
-    <title>Laredo Photos</title>
+    <title>Laredo Lightbox</title>
   </head>
   <body>
-    <h1>Hello World!</h1>
+    <div id="back-to-home">
+      <a href="/">&#10094; Back to Home</a>
+    </div>
+
+    <div id="gallery-info">
+    </div>
+
+    <div id="gallery"></div>
+
+    <div id="lightbox" class="lightbox-background" onclick="closeLightbox(event)">
+      <!-- Add function document.addEventListener("click", function), where function determines if div clicked was NOT lightbox-content or close cursor -->
+      <span class="close cursor" onclick="closeLightbox(event)">&times;</span>
+      <div class="lightbox-content">
+        <a id="prev" class="navButtons" onclick="prevPic()">&#10094;</a>
+        <a id="next" class="navButtons" onclick="nextPic()">&#10095;</a>
+        <div id="numPic"></div>
+        <img id="lightbox-pic" src="">
+      </div>
+    </div>    
+
+    <script src="js/app.js"></script>
   </body>
-  <footer>
-    <p>Developed by Tyler Laredo. © October, 2016</p>
+  <footer style="display: none;">
+    <p>Developed by Tyler Laredo. October, 2016</p>
   </footer>
 </html>

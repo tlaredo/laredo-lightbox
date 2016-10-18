@@ -6,10 +6,63 @@ body {
 
 h1 {
   font-size: 2.5em;
+  text-align: center;
+}
+
+h2 {
+  text-align: center;
+}
+
+a {
+  color: black;
+}
+
+a:hover {
+  color: #c3e140;
 }
 
 footer {
+  color: white;
   text-align: center;
+  padding: 40px 0 5px 0;
+  background: #4A4A4A;
+  box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.50);
+  padding-left: 15%;
+  padding-right: 15%;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
+}
+
+.action-links {
+  font-size: 1.75em;
+}
+
+.container {
+  padding: 3% 15%;
+}
+
+#back-to-home {
+    display: none;
+    position: absolute;
+    margin: 7px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+}
+
+#back-to-home a {
+  color: white;
+  text-decoration: none;
+}
+
+#back-to-home:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+#back-to-home:hover a {
+  color: black;
+  text-decoration: none;
 }
 
 /* The Modal (background) */
@@ -158,10 +211,10 @@ img.hover-shadow {
   padding: 8% 9%;
   text-align: center;
   color: white;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background: linear-gradient(rgba(0, 0, 0, 0.498039), rgba(0, 0, 0, 0.74902)), url("static/images/photo-albums.jpg");
+  background-position: center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), url("../static/images/photo-albums.jpg");
 }
 
 #gallery-info {
@@ -171,6 +224,11 @@ img.hover-shadow {
   background-position: center !important;
   background-size: cover !important;
   background-repeat: no-repeat !important;
+}
+
+#gallery-info a {
+  color: white;
+  overflow-wrap: break-word;
 }
 
 #gallery {
