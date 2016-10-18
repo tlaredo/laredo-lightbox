@@ -24,10 +24,10 @@ var currentPic = 0; //Used in lightbox functions
 
 //  ===============  2. LOAD FLICKR API FUNCTIONS ===============
 
-/* Process for loading photos:
+/* Process for loading photos with Flickr API:
     Step 1. Get gallery_id for photo gallery using flickr.urls.lookupGallery(url)
-    Step 2. Get standard photo response from flickr.galleries.getPhotos(gallery_id, format)
-        Retreive farm-id, server-id, id, secret-id, format and store them in 5 arrays
+    Step 2. Get standard photo response (XML format) from flickr.galleries.getPhotos(gallery_id, format)
+        -> Retreive farm-id, server-id, id, secret-id, format and store them in 5 arrays
     Step 3. Use these values to get photo source URL, in following format:
         https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
         Use string concatonation to generate URLs
@@ -129,7 +129,6 @@ function generateURLs() {
         var URL = 'https://farm'+farm_id+'.staticflickr.com/'+server_id+'/'+photo_id+'_'+secret_id+'.jpg';
         imageURL.push(URL);
     }
-    console.log(imageURL.length)
     console.log(imageURL);
     // Call ImageRepeat() to populate page with images.
     ImageRepeat();
@@ -155,7 +154,7 @@ function galleryInfo(title, description, count_photos) {
     var gallery_description = document.createElement("h4");
     gallery_description.className = "gallery-description";
     gallery_description.innerHTML = description;
-    var gallery_photo_count = document.createElement("h4");
+    var gallery_photo_count = document.createElement("h2");
     gallery_photo_count.className = "gallery-photo-count";
     gallery_photo_count.innerHTML = count_photos+" photos";
     
@@ -195,7 +194,6 @@ function ImageRepeat() {
         image.id = i;
         //If you click on this photo, it activates lightbox and generates pic for this image's corresponding id.
         image.onclick = function() {openLightbox(); generatePic(this.id);};
-        console.log(i);
         
         // Append image -> crop -> thumbnail -> tile -> gallery
         crop.appendChild(image);
@@ -215,26 +213,32 @@ function ImageRepeat() {
 
 // Activate lightbox (show lightbox div)
 function openLightbox() {
-  document.getElementById('lightbox').style.display = "block";
+    document.getElementById('lightbox').style.display = "block";
 }
 
 // Exit lightbox (hide lightbox div)
-function closeLightbox() {
-  document.getElementById('lightbox').style.display = "none";
+function closeLightbox(event) {
+    console.log(event.target.className);
+    if (event.target.className == "lightbox-background") {
+            document.getElementById('lightbox').style.display = "none";
+    }
+    if (event.target.className == "close cursor") {
+            document.getElementById('lightbox').style.display = "none";
+    }
 }
 
 // Goes to next pic (uses global variable 'currentPic' to generate next pic)
 function nextPic() {
-  var next = window.currentPic;
-  next++;
-  generatePic(next);
+    var next = window.currentPic;
+    next++;
+    generatePic(next);
 }
 
 // Goes to previous pic (uses global variable 'currentPic' to generate prev pic)
 function prevPic() {
-  var prev = window.currentPic;
-  prev--;
-  generatePic(prev);
+    var prev = window.currentPic;
+    prev--;
+    generatePic(prev);
 }
 
 var completed = false;
@@ -275,15 +279,12 @@ function generatePic(n) {
         width = img.width;
         console.log(height+' x '+width);
         if (height < width) {
-            console.log("Landscape photo");
             document.getElementById("lightbox-pic").className = "landscape";
         }
         else if (height > width) {
-            console.log("Portrait photo");
             document.getElementById("lightbox-pic").className = "portrait";
         }
         else {
-            console.log("Square photo");
             document.getElementById("lightbox-pic").className = "square";
         }
     }

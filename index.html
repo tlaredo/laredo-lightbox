@@ -17,12 +17,12 @@
 
     <div id="gallery"></div>
 
-    <div id="lightbox" class="lightbox-background">
+    <div id="lightbox" class="lightbox-background" onclick="closeLightbox(event)">
       <!-- Add function document.addEventListener("click", function), where function determines if div clicked was NOT lightbox-content or close cursor -->
-      <span class="close cursor" onclick="closeLightbox()">&times;</span>
+      <span class="close cursor" onclick="closeLightbox(event)">&times;</span>
       <div class="lightbox-content">
-        <a id="prev" onclick="prevPic()">&#10094;</a>
-        <a id="next" onclick="nextPic()">&#10095;</a>
+        <a id="prev" class="navButtons" onclick="prevPic()">&#10094;</a>
+        <a id="next" class="navButtons" onclick="nextPic()">&#10095;</a>
         <div id="numPic"></div>
         <img id="lightbox-pic" src="">
       </div>
