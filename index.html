@@ -31,29 +31,27 @@
     <title>Laredo Photos</title>
   </head>
   <body>
-    <div id="back-to-home">
-      <a href="home.html">&#10094; Back to Home</a>
+    <div id="homepage-cover">
+        <h1>Laredo Lightbox</h1>
+    </div>
+    <div class="container">
+        <h2>Hello, welcome to Laredo Lightbox! ✌️</h2>
+        <p>Laredo Lightbox is a simple web application that extracts photos from Flickr and presents them in a clean grid layout. When you click on a photo, you can view it in lightbox view and navigate between the different photos in the gallery.</p>
+        <h1><a href="demo.html">View Demo</a></h1>
+        <br>
+        <hr>
+        <br>
+        <p>This was built with pure JavaScript and with no external libraries. For demonstration purposes, I hardcoded the URL for the photo gallery in my JavaScript file. Down the road, I plan on creating a form where you can enter the URL for any valid Flickr photo gallery and have it display on my application. The photo gallery that I used in this demo is <a href="https://www.flickr.com/photos/flickr/galleries/72157669781709702/" target="_blank">Camera Day</a>. The cover photo, gallery title, gallery description, number of photos, and photo sources are all extracted from Flickr's API.</p>
+        <br>
+        Click <a href="https://github.com/tlaredo/laredo-lightbox" target="_blank">here</a> to check out my GitHub repo. 
+        <br>
+        <br>
+        You can also check out my personal site at <a href="http://tylerlaredo.com/" target="_blank">tylerlaredo.com</a>. Feel free to email me at <a href="mailto:me@tylerlaredo.com">me@tylerlaredo.com</a>.
+        <br>
     </div>
 
-    <div id="gallery-info">
-    </div>
-
-    <div id="gallery"></div>
-
-    <div id="lightbox" class="lightbox-background" onclick="closeLightbox(event)">
-      <!-- Add function document.addEventListener("click", function), where function determines if div clicked was NOT lightbox-content or close cursor -->
-      <span class="close cursor" onclick="closeLightbox(event)">&times;</span>
-      <div class="lightbox-content">
-        <a id="prev" class="navButtons" onclick="prevPic()">&#10094;</a>
-        <a id="next" class="navButtons" onclick="nextPic()">&#10095;</a>
-        <div id="numPic"></div>
-        <img id="lightbox-pic" src="">
-      </div>
-    </div>    
-
-    <script src="js/app.js"></script>
   </body>
-  <footer style="display: none;">
+  <footer>
     <p>Developed by Tyler Laredo. © October, 2016</p>
   </footer>
 </html>

@@ -221,6 +221,10 @@ img.hover-shadow {
   background-repeat: no-repeat !important;
 }
 
+#gallery-info a {
+  color: white;
+}
+
 #gallery {
   overflow: hidden;
   margin: 5% 10%;
