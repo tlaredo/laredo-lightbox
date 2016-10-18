@@ -6,7 +6,7 @@ Laredo Lightbox is a mobile-responsive web application that extracts photos from
 
 ## Notes About Demo
 
-This was built with pure JavaScript and with no external libraries. For demonstration purposes, I hardcoded the URL for the photo gallery in my JavaScript file. The photo gallery that I used in this demo is [Camera Day](https://www.flickr.com/photos/flickr/galleries/72157669781709702/). The cover photo, gallery title, gallery description, number of photos, and photo sources are all extracted from Flickr's API.
+This was built with vanilla JavaScript and with no external libraries. For demonstration purposes, I hardcoded the URL for the photo gallery in my JavaScript file. The photo gallery that I used in this demo is [Camera Day](https://www.flickr.com/photos/flickr/galleries/72157669781709702/). The cover photo, gallery title, gallery description, number of photos, and photo sources are all extracted from Flickr's API.
 
 ## API Reference
 
