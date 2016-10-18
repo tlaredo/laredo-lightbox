@@ -202,6 +202,8 @@ function ImageRepeat() {
         document.getElementById("gallery").appendChild(tile);
     }
 
+    document.querySelector('footer').style.display = "block";
+
     console.log("successfully loaded images");
 
 }
